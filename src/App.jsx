@@ -3,20 +3,25 @@ import {
   ShoppingBag, User, LogOut, Package, 
   LayoutDashboard, ShoppingCart, Plus, TrendingUp, 
   CheckCircle, XCircle, Star, Droplet, Leaf, ShieldCheck,
-  Mail, MapPin, Instagram, Twitter
+  Mail, MapPin, Instagram, Twitter, Menu, X, Users
 } from 'lucide-react';
 import { 
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
   BarChart, Bar
 } from 'recharts';
+import productImage1 from '../Image/product1.png';
+import productImage2 from '../Image/product2.png';
+import productImage3 from '../Image/product3.png';
 
 
 // --- MOCK DATA ---
+const PRODUCT_IMAGES = [productImage1, productImage2, productImage3];
+
 const INITIAL_PRODUCTS = [
-  { id: 1, name: 'Rosemary Stimulating Hair Oil', price: 25.00, stock: 145, category: 'Growth', rating: 4.8, image: 'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&q=80&w=400', desc: 'Promotes scalp health and faster growth.' },
-  { id: 2, name: 'Argan Moisture Seal Blend', price: 30.00, stock: 12, category: 'Moisture', rating: 4.9, image: 'https://images.unsplash.com/photo-1615397323214-e28a5ffbb0b3?auto=format&fit=crop&q=80&w=400', desc: 'Locks in moisture for dry, brittle ends.' },
-  { id: 3, name: 'Chebe Infused Strengthener', price: 35.00, stock: 0, category: 'Strength', rating: 4.7, image: 'https://images.unsplash.com/photo-1629198725878-8ed679d48b11?auto=format&fit=crop&q=80&w=400', desc: 'Traditional African secret for length retention.' },
-  { id: 4, name: 'Daily Shine Serum', price: 18.00, stock: 85, category: 'Styling', rating: 4.5, image: 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?auto=format&fit=crop&q=80&w=400', desc: 'Lightweight serum for everyday luster.' },
+  { id: 1, name: 'Rosemary Stimulating Hair Oil', price: 25.00, stock: 145, category: 'Growth', rating: 4.8, image: PRODUCT_IMAGES[0], desc: 'Promotes scalp health and faster growth.' },
+  { id: 2, name: 'Argan Moisture Seal Blend', price: 30.00, stock: 12, category: 'Moisture', rating: 4.9, image: PRODUCT_IMAGES[1], desc: 'Locks in moisture for dry, brittle ends.' },
+  { id: 3, name: 'Chebe Infused Strengthener', price: 35.00, stock: 0, category: 'Strength', rating: 4.7, image: PRODUCT_IMAGES[2], desc: 'Traditional African secret for length retention.' },
+  { id: 4, name: 'Daily Shine Serum', price: 18.00, stock: 85, category: 'Styling', rating: 4.5, image: PRODUCT_IMAGES[0], desc: 'Lightweight serum for everyday luster.' },
 ];
 
 const INITIAL_ORDERS = [
@@ -41,14 +46,20 @@ const USERS = {
   'customer': { id: 'u2', name: 'Loyal Customer', role: 'customer', email: 'user' }
 };
 
+const INITIAL_STAFF = [
+  { id: 1, name: 'Miheret Z.', role: 'Store Manager', email: 'miheret@miheretnaturals.com', phone: '+251 911 000 101', status: 'Active' },
+  { id: 2, name: 'Sara M.', role: 'Inventory Lead', email: 'sara@miheretnaturals.com', phone: '+251 911 000 102', status: 'Active' },
+  { id: 3, name: 'Helen K.', role: 'Order Fulfillment', email: 'helen@miheretnaturals.com', phone: '+251 911 000 103', status: 'On Leave' },
+];
+
 
 // --- REUSABLE COMPONENTS ---
 const Button = ({ children, variant = 'primary', className = '', ...props }) => {
   const baseStyle = "px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center justify-center gap-2";
   const variants = {
-    primary: "bg-amber-700 hover:bg-amber-800 text-white shadow-md hover:shadow-lg",
+    primary: "bg-primary-600 hover:bg-primary-700 text-white shadow-md hover:shadow-lg",
     secondary: "bg-stone-200 hover:bg-stone-300 text-stone-800",
-    outline: "border-2 border-amber-700 text-amber-700 hover:bg-amber-50",
+    outline: "border-2 border-primary-600 text-primary-700 hover:bg-primary-50",
     danger: "bg-red-500 hover:bg-red-600 text-white"
   };
   return (
@@ -61,7 +72,7 @@ const Button = ({ children, variant = 'primary', className = '', ...props }) => 
 const Badge = ({ text, type }) => {
   const types = {
     success: "bg-green-100 text-green-800",
-    warning: "bg-amber-100 text-amber-800",
+    warning: "bg-primary-100 text-primary-800",
     danger: "bg-red-100 text-red-800",
     neutral: "bg-stone-100 text-stone-800"
   };
@@ -89,7 +100,7 @@ const Storefront = ({ products, setView, user, addToCart }) => {
           </div>
           <div className="relative z-10 px-8 py-24 md:py-32">
             <div className="max-w-4xl">
-              <h1 className="text-4xl md:text-6xl font-serif font-bold mb-4 leading-tight text-amber-50">
+              <h1 className="text-4xl md:text-6xl font-serif font-bold mb-4 leading-tight text-primary-50">
                 Nourish Your Crown with Nature's Best.
               </h1>
               <p className="text-lg md:text-xl text-stone-300 mb-8 max-w-2xl">
@@ -107,7 +118,7 @@ const Storefront = ({ products, setView, user, addToCart }) => {
       {user && user.role === 'customer' && (
         <section className="px-4 py-12 max-w-7xl mx-auto">
           <div className="flex items-center gap-3 mb-6">
-            <Star className="text-amber-500 fill-amber-500" />
+            <Star className="text-primary-500 fill-primary-500" />
             <h2 className="text-2xl font-serif font-bold text-stone-800">Recommended for {user.name}</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -134,24 +145,24 @@ const Storefront = ({ products, setView, user, addToCart }) => {
       </section>
 
       {/* Features */}
-      <section className="bg-amber-50 py-16 px-4 mt-12">
+      <section className="bg-primary-50 py-16 px-4 mt-12">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
           <div className="flex flex-col items-center p-6">
-            <div className="w-16 h-16 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center mb-4">
+            <div className="w-16 h-16 bg-primary-100 text-primary-700 rounded-full flex items-center justify-center mb-4">
               <Droplet size={32} />
             </div>
             <h3 className="text-xl font-bold mb-2">100% Pure Oils</h3>
             <p className="text-stone-600">No synthetic fillers or artificial fragrances. Just pure, potent plant power.</p>
           </div>
           <div className="flex flex-col items-center p-6">
-            <div className="w-16 h-16 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center mb-4">
+            <div className="w-16 h-16 bg-primary-100 text-primary-700 rounded-full flex items-center justify-center mb-4">
               <Leaf size={32} />
             </div>
             <h3 className="text-xl font-bold mb-2">Ethically Sourced</h3>
             <p className="text-stone-600">We partner directly with farmers to ensure sustainable and fair-trade practices.</p>
           </div>
           <div className="flex flex-col items-center p-6">
-            <div className="w-16 h-16 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center mb-4">
+            <div className="w-16 h-16 bg-primary-100 text-primary-700 rounded-full flex items-center justify-center mb-4">
               <ShieldCheck size={32} />
             </div>
             <h3 className="text-xl font-bold mb-2">Proven Results</h3>
@@ -189,7 +200,7 @@ const StorePage = ({ products, setView, user, addToCart }) => {
           <button
             key={cat}
             onClick={() => setCategory(cat)}
-            className={`px-4 py-2 rounded-full text-sm font-medium ${category === cat ? 'bg-amber-700 text-white' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'}`}
+            className={`px-4 py-2 rounded-full text-sm font-medium ${category === cat ? 'bg-primary-600 text-white' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'}`}
           >
             {cat}
           </button>
@@ -211,7 +222,7 @@ const StorePage = ({ products, setView, user, addToCart }) => {
             <div className="flex-grow">
               <h3 className="font-bold text-stone-800 text-lg mb-1">{product.name}</h3>
               <div className="flex items-center gap-2 text-sm text-stone-500 mb-3">
-                <span className="font-semibold text-amber-700">${product.price.toFixed(2)}</span>
+                <span className="font-semibold text-primary-700">${product.price.toFixed(2)}</span>
                 <span>·</span>
                 <span>{product.category}</span>
                 <span>·</span>
@@ -239,7 +250,7 @@ const StorePage = ({ products, setView, user, addToCart }) => {
               <img src={selectedProduct.image} alt={selectedProduct.name} className="w-full h-56 object-cover rounded-lg" />
               <div>
                 <p className="text-stone-700 mb-3">{selectedProduct.desc}</p>
-                <p className="font-semibold text-amber-700 text-lg mb-3">${selectedProduct.price.toFixed(2)}</p>
+                <p className="font-semibold text-primary-700 text-lg mb-3">${selectedProduct.price.toFixed(2)}</p>
                 <div className="flex items-center gap-3">
                   <Button onClick={() => { addToCart(selectedProduct); setSelectedProduct(null); }} className="flex-1">Add to Cart</Button>
                   <Button variant="secondary" onClick={() => setSelectedProduct(null)}>Close</Button>
@@ -278,7 +289,7 @@ const ProductCard = ({ product, addToCart }) => (
       </div>
       <p className="text-stone-500 text-sm mb-4 flex-grow">{product.desc}</p>
       <div className="flex items-center justify-between mt-auto">
-        <span className="text-xl font-bold text-amber-800">${product.price.toFixed(2)}</span>
+        <span className="text-xl font-bold text-primary-800">${product.price.toFixed(2)}</span>
         <Button 
           onClick={() => addToCart(product)} 
           disabled={product.stock === 0}
@@ -334,11 +345,11 @@ const AdminDashboard = ({ salesData, orders, products }) => {
               <p className="text-stone-500 font-medium mb-1">Low Stock Alerts</p>
               <h3 className="text-3xl font-bold text-stone-800">{lowStockProducts}</h3>
             </div>
-            <div className="bg-amber-100 p-3 rounded-xl text-amber-700">
+            <div className="bg-primary-100 p-3 rounded-xl text-primary-700">
               <Package size={24} />
             </div>
           </div>
-          <p className="text-sm text-amber-600 mt-4 flex items-center gap-1">Action required</p>
+          <p className="text-sm text-primary-600 mt-4 flex items-center gap-1">Action required</p>
         </div>
       </div>
 
@@ -462,21 +473,21 @@ const AdminInventory = ({ products, setProducts }) => {
             <form onSubmit={handleAddProduct} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-stone-700 mb-1">Product Name</label>
-                <input required type="text" value={newProduct.name} onChange={e => setNewProduct({...newProduct, name: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none" />
+                <input required type="text" value={newProduct.name} onChange={e => setNewProduct({...newProduct, name: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-stone-700 mb-1">Price ($)</label>
-                  <input required type="number" step="0.01" value={newProduct.price} onChange={e => setNewProduct({...newProduct, price: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none" />
+                  <input required type="number" step="0.01" value={newProduct.price} onChange={e => setNewProduct({...newProduct, price: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-stone-700 mb-1">Initial Stock</label>
-                  <input required type="number" value={newProduct.stock} onChange={e => setNewProduct({...newProduct, stock: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none" />
+                  <input required type="number" value={newProduct.stock} onChange={e => setNewProduct({...newProduct, stock: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" />
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-stone-700 mb-1">Category</label>
-                <select value={newProduct.category} onChange={e => setNewProduct({...newProduct, category: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none">
+                <select value={newProduct.category} onChange={e => setNewProduct({...newProduct, category: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none">
                   <option value="">Select category...</option>
                   <option value="Growth">Growth</option>
                   <option value="Moisture">Moisture</option>
@@ -486,7 +497,7 @@ const AdminInventory = ({ products, setProducts }) => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-stone-700 mb-1">Description</label>
-                <textarea rows="3" value={newProduct.desc} onChange={e => setNewProduct({...newProduct, desc: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none"></textarea>
+                <textarea rows="3" value={newProduct.desc} onChange={e => setNewProduct({...newProduct, desc: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none"></textarea>
               </div>
               <div className="pt-4 flex gap-3">
                 <Button type="button" variant="secondary" className="flex-1" onClick={() => setShowAddModal(false)}>Cancel</Button>
@@ -496,6 +507,201 @@ const AdminInventory = ({ products, setProducts }) => {
           </div>
         </div>
       )}
+    </div>
+  );
+};
+
+const AdminStaff = ({ staff, setStaff }) => {
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [newStaff, setNewStaff] = useState({ name: '', role: '', email: '', phone: '', status: 'Active' });
+
+  const handleAddStaff = (e) => {
+    e.preventDefault();
+    setStaff([
+      ...staff,
+      {
+        id: Date.now(),
+        name: newStaff.name,
+        role: newStaff.role,
+        email: newStaff.email,
+        phone: newStaff.phone,
+        status: newStaff.status,
+      },
+    ]);
+    setShowAddModal(false);
+    setNewStaff({ name: '', role: '', email: '', phone: '', status: 'Active' });
+  };
+
+  const updateStaffStatus = (id, status) => {
+    setStaff(staff.map(member => member.id === id ? { ...member, status } : member));
+  };
+
+  return (
+    <div className="animate-in fade-in space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h2 className="text-2xl font-bold text-stone-800">Staff Management</h2>
+          <p className="text-stone-500">Manage store team roles, contact details, and availability.</p>
+        </div>
+        <Button onClick={() => setShowAddModal(true)}><Plus size={20} /> Add Staff</Button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-100">
+          <p className="text-stone-500 font-medium mb-1">Total Staff</p>
+          <h3 className="text-3xl font-bold text-stone-800">{staff.length}</h3>
+        </div>
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-100">
+          <p className="text-stone-500 font-medium mb-1">Active Staff</p>
+          <h3 className="text-3xl font-bold text-stone-800">{staff.filter(member => member.status === 'Active').length}</h3>
+        </div>
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-100">
+          <p className="text-stone-500 font-medium mb-1">On Leave</p>
+          <h3 className="text-3xl font-bold text-stone-800">{staff.filter(member => member.status === 'On Leave').length}</h3>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-2xl shadow-sm border border-stone-100 overflow-x-auto">
+        <table className="w-full min-w-[760px] text-left border-collapse">
+          <thead>
+            <tr className="bg-stone-50 text-stone-500 border-b border-stone-200">
+              <th className="p-4 font-semibold">Staff Member</th>
+              <th className="p-4 font-semibold">Role</th>
+              <th className="p-4 font-semibold">Email</th>
+              <th className="p-4 font-semibold">Phone</th>
+              <th className="p-4 font-semibold">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {staff.map(member => (
+              <tr key={member.id} className="border-b border-stone-100 hover:bg-stone-50 transition-colors">
+                <td className="p-4 font-medium text-stone-800">{member.name}</td>
+                <td className="p-4 text-stone-600">{member.role}</td>
+                <td className="p-4 text-stone-600">{member.email}</td>
+                <td className="p-4 text-stone-600">{member.phone}</td>
+                <td className="p-4">
+                  <select
+                    className="text-sm border border-stone-300 rounded-lg p-1.5 outline-none focus:ring-2 focus:ring-primary-500"
+                    value={member.status}
+                    onChange={(e) => updateStaffStatus(member.id, e.target.value)}
+                  >
+                    <option value="Active">Active</option>
+                    <option value="On Leave">On Leave</option>
+                    <option value="Inactive">Inactive</option>
+                  </select>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {showAddModal && (
+        <div className="fixed inset-0 bg-stone-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl animate-in zoom-in-95 duration-200">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-bold text-stone-800">Add Staff Member</h3>
+              <button onClick={() => setShowAddModal(false)} className="text-stone-400 hover:text-stone-600">
+                <XCircle size={24} />
+              </button>
+            </div>
+            <form onSubmit={handleAddStaff} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-1">Full Name</label>
+                <input required value={newStaff.name} onChange={e => setNewStaff({...newStaff, name: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-1">Role</label>
+                <input required value={newStaff.role} onChange={e => setNewStaff({...newStaff, role: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-1">Email</label>
+                <input required type="email" value={newStaff.email} onChange={e => setNewStaff({...newStaff, email: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-1">Phone</label>
+                <input required value={newStaff.phone} onChange={e => setNewStaff({...newStaff, phone: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" />
+              </div>
+              <div className="pt-4 flex gap-3">
+                <Button type="button" variant="secondary" className="flex-1" onClick={() => setShowAddModal(false)}>Cancel</Button>
+                <Button type="submit" className="flex-1">Save Staff</Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const AdminStock = ({ products, setProducts }) => {
+  const totalUnits = products.reduce((sum, product) => sum + product.stock, 0);
+  const lowStockCount = products.filter(product => product.stock > 0 && product.stock < 20).length;
+  const outOfStockCount = products.filter(product => product.stock === 0).length;
+
+  const adjustStock = (id, amount) => {
+    setProducts(products.map(product => (
+      product.id === id ? { ...product, stock: Math.max(0, product.stock + amount) } : product
+    )));
+  };
+
+  return (
+    <div className="animate-in fade-in space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold text-stone-800">Stock Management</h2>
+        <p className="text-stone-500">Track inventory levels and make quick stock adjustments.</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-100">
+          <p className="text-stone-500 font-medium mb-1">Total Units</p>
+          <h3 className="text-3xl font-bold text-stone-800">{totalUnits}</h3>
+        </div>
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-100">
+          <p className="text-stone-500 font-medium mb-1">Low Stock Items</p>
+          <h3 className="text-3xl font-bold text-stone-800">{lowStockCount}</h3>
+        </div>
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-100">
+          <p className="text-stone-500 font-medium mb-1">Out of Stock</p>
+          <h3 className="text-3xl font-bold text-stone-800">{outOfStockCount}</h3>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-2xl shadow-sm border border-stone-100 overflow-x-auto">
+        <table className="w-full min-w-[760px] text-left border-collapse">
+          <thead>
+            <tr className="bg-stone-50 text-stone-500 border-b border-stone-200">
+              <th className="p-4 font-semibold">Product</th>
+              <th className="p-4 font-semibold">Category</th>
+              <th className="p-4 font-semibold">Current Stock</th>
+              <th className="p-4 font-semibold">Status</th>
+              <th className="p-4 font-semibold">Quick Adjust</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map(product => (
+              <tr key={product.id} className="border-b border-stone-100 hover:bg-stone-50 transition-colors">
+                <td className="p-4 flex items-center gap-3">
+                  <img src={product.image} alt={product.name} className="w-10 h-10 rounded-lg object-cover" />
+                  <span className="font-medium text-stone-800">{product.name}</span>
+                </td>
+                <td className="p-4 text-stone-600">{product.category}</td>
+                <td className="p-4 font-medium text-stone-800">{product.stock} units</td>
+                <td className="p-4">
+                  {product.stock === 0 ? <Badge text="Out of Stock" type="danger" /> : product.stock < 20 ? <Badge text="Low" type="warning" /> : <Badge text="Healthy" type="success" />}
+                </td>
+                <td className="p-4">
+                  <div className="flex items-center gap-2">
+                    <Button variant="secondary" className="px-3" onClick={() => adjustStock(product.id, -1)}>-1</Button>
+                    <Button variant="secondary" className="px-3" onClick={() => adjustStock(product.id, 1)}>+1</Button>
+                    <Button className="px-3" onClick={() => adjustStock(product.id, 10)}>+10</Button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
@@ -535,7 +741,7 @@ const AdminOrders = ({ orders, setOrders }) => {
                 </td>
                 <td className="p-4">
                   <select 
-                    className="text-sm border border-stone-300 rounded-lg p-1.5 outline-none focus:ring-2 focus:ring-amber-500"
+                    className="text-sm border border-stone-300 rounded-lg p-1.5 outline-none focus:ring-2 focus:ring-primary-500"
                     value={order.status}
                     onChange={(e) => updateStatus(order.id, e.target.value)}
                   >
@@ -597,7 +803,7 @@ const ContactSection = () => {
               <input required type="email" placeholder="Your email" value={email} onChange={e => setEmail(e.target.value)} className="w-full p-3 rounded-lg border border-stone-200 outline-none" />
               <textarea required rows={5} placeholder="How can we help?" value={message} onChange={e => setMessage(e.target.value)} className="w-full p-3 rounded-lg border border-stone-200 outline-none"></textarea>
               <div className="text-right">
-                <button type="submit" className="px-6 py-2 bg-amber-700 text-white rounded-lg">Send Message</button>
+                <button type="submit" className="px-6 py-2 bg-primary-600 text-white rounded-lg">Send Message</button>
               </div>
             </div>
           </form>
@@ -613,7 +819,7 @@ const Footer = () => (
       <div className="flex flex-col md:flex-row justify-between items-start gap-6">
         <div>
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-amber-700 rounded-xl flex items-center justify-center text-white font-serif font-bold">M</div>
+            <div className="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center text-white font-serif font-bold">M</div>
             <span className="font-serif font-bold text-xl text-white">Miheret Naturals</span>
           </div>
           <p className="text-stone-400 max-w-sm">Handcrafted hair oils made with ethically sourced ingredients. Nourish your hair the natural way.</p>
@@ -649,13 +855,15 @@ const Footer = () => (
 
 // --- MAIN APPLICATION ---
 export default function App() {
-  const [view, setView] = useState('store');
+  const [view, setView] = useState('home');
   const [user, setUser] = useState(null);
   const [products, setProducts] = useState(INITIAL_PRODUCTS);
   const [orders, setOrders] = useState(INITIAL_ORDERS);
+  const [staff, setStaff] = useState(INITIAL_STAFF);
   const [cart, setCart] = useState([]);
   const [toastMessage, setToastMessage] = useState('');
   const [username, setUsername] = useState('');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Sync initial view from URL and enable back/forward navigation
   useEffect(() => {
@@ -663,8 +871,9 @@ export default function App() {
       if (p.startsWith('/admin')) return 'admin-dashboard';
       if (p === '/cart') return 'cart';
       if (p === '/login') return 'login';
-      if (p === '/store' || p === '/') return 'store';
-      return 'store';
+      if (p === '/store') return 'store';
+      if (p === '/') return 'home';
+      return 'home';
     };
 
     const handlePop = () => {
@@ -679,11 +888,14 @@ export default function App() {
 
   // Push URL when view changes
   useEffect(() => {
+    setIsMobileMenuOpen(false);
+
     const mapViewToPath = (v) => {
       if (v === 'cart') return '/cart';
       if (v === 'login') return '/login';
       if (v.startsWith('admin')) return '/admin';
-      return '/store';
+      if (v === 'store') return '/store';
+      return '/';
     };
     const newPath = mapViewToPath(view);
     if (window.location.pathname !== newPath) {
@@ -745,7 +957,7 @@ export default function App() {
   const cartTotal = cart.reduce((sum, item) => sum + item.price, 0);
 
   return (
-    <div className="min-h-screen bg-stone-50 font-sans text-stone-900 selection:bg-amber-200">
+    <div className="min-h-screen bg-stone-50 font-sans text-stone-900 selection:bg-primary-200">
       {toastMessage && (
         <div className="fixed bottom-4 right-4 z-50 bg-stone-900 text-white px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3 animate-in slide-in-from-bottom-5">
           <CheckCircle size={20} className="text-green-400" />
@@ -756,11 +968,11 @@ export default function App() {
       <nav className="bg-white border-b border-stone-200 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
-            <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer" onClick={() => setView(user?.role === 'admin' ? 'admin-dashboard' : 'store')}>
-              <div className="w-10 h-10 bg-gradient-to-br from-amber-600 to-amber-800 rounded-xl flex items-center justify-center text-white font-serif font-bold text-xl shadow-md">
+            <div className="min-w-0 flex items-center gap-2 cursor-pointer" onClick={() => setView(user?.role === 'admin' ? 'admin-dashboard' : 'home')}>
+              <div className="w-10 h-10 flex-shrink-0 bg-gradient-to-br from-primary-500 to-primary-800 rounded-xl flex items-center justify-center text-white font-serif font-bold text-xl shadow-md">
                 M
               </div>
-              <span className="font-serif font-bold text-2xl tracking-tight text-stone-800">
+              <span className="truncate font-serif font-bold text-xl sm:text-2xl tracking-tight text-stone-800">
                 Miheret Naturals
               </span>
             </div>
@@ -768,11 +980,12 @@ export default function App() {
             <div className="hidden md:flex items-center gap-6">
               {(!user || user.role === 'customer') && (
                 <>
-                  <button onClick={() => setView('store')} className={`font-medium transition-colors ${view === 'store' ? 'text-amber-700' : 'text-stone-500 hover:text-stone-800'}`}>Store</button>
+                  <button onClick={() => setView('home')} className={`font-medium transition-colors ${view === 'home' ? 'text-primary-700' : 'text-stone-500 hover:text-stone-800'}`}>Home</button>
+                  <button onClick={() => setView('store')} className={`font-medium transition-colors ${view === 'store' ? 'text-primary-700' : 'text-stone-500 hover:text-stone-800'}`}>Store</button>
                   <div className="relative cursor-pointer" onClick={() => setView('cart')}>
-                    <ShoppingCart className="text-stone-600 hover:text-amber-700 transition-colors" />
+                    <ShoppingCart className="text-stone-600 hover:text-primary-700 transition-colors" />
                     {cart.length > 0 && (
-                      <span className="absolute -top-2 -right-2 bg-amber-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                      <span className="absolute -top-2 -right-2 bg-primary-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
                         {cart.length}
                       </span>
                     )}
@@ -795,7 +1008,65 @@ export default function App() {
                 </Button>
               )}
             </div>
+
+            <div className="md:hidden flex flex-shrink-0 items-center gap-3">
+              {(!user || user.role === 'customer') && (
+                <button className="relative p-2 text-stone-600" onClick={() => setView('cart')} aria-label="Open cart">
+                  <ShoppingCart />
+                  {cart.length > 0 && (
+                    <span className="absolute top-0 right-0 bg-primary-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                      {cart.length}
+                    </span>
+                  )}
+                </button>
+              )}
+              <button
+                className="p-2 text-stone-700"
+                onClick={() => setIsMobileMenuOpen((open) => !open)}
+                aria-label="Toggle navigation menu"
+                aria-expanded={isMobileMenuOpen}
+              >
+                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
+
+          {isMobileMenuOpen && (
+            <div className="md:hidden border-t border-stone-200 py-4 space-y-3">
+              {user?.role === 'admin' ? (
+                <>
+                  <button onClick={() => setView('admin-dashboard')} className={`block w-full text-left px-2 py-2 font-medium rounded-lg ${view === 'admin-dashboard' ? 'text-primary-700 bg-primary-50' : 'text-stone-600'}`}>Dashboard</button>
+                  <button onClick={() => setView('admin-inventory')} className={`block w-full text-left px-2 py-2 font-medium rounded-lg ${view === 'admin-inventory' ? 'text-primary-700 bg-primary-50' : 'text-stone-600'}`}>Inventory</button>
+                  <button onClick={() => setView('admin-stock')} className={`block w-full text-left px-2 py-2 font-medium rounded-lg ${view === 'admin-stock' ? 'text-primary-700 bg-primary-50' : 'text-stone-600'}`}>Stock</button>
+                  <button onClick={() => setView('admin-staff')} className={`block w-full text-left px-2 py-2 font-medium rounded-lg ${view === 'admin-staff' ? 'text-primary-700 bg-primary-50' : 'text-stone-600'}`}>Staff</button>
+                  <button onClick={() => setView('admin-orders')} className={`block w-full text-left px-2 py-2 font-medium rounded-lg ${view === 'admin-orders' ? 'text-primary-700 bg-primary-50' : 'text-stone-600'}`}>Orders</button>
+                </>
+              ) : (
+                <>
+                  <button onClick={() => setView('home')} className={`block w-full text-left px-2 py-2 font-medium rounded-lg ${view === 'home' ? 'text-primary-700 bg-primary-50' : 'text-stone-600'}`}>Home</button>
+                  <button onClick={() => setView('store')} className={`block w-full text-left px-2 py-2 font-medium rounded-lg ${view === 'store' ? 'text-primary-700 bg-primary-50' : 'text-stone-600'}`}>Store</button>
+                  <button onClick={() => setView('cart')} className={`block w-full text-left px-2 py-2 font-medium rounded-lg ${view === 'cart' ? 'text-primary-700 bg-primary-50' : 'text-stone-600'}`}>Cart</button>
+                </>
+              )}
+
+              <div className="border-t border-stone-200 pt-3">
+                {user ? (
+                  <div className="flex items-center justify-between gap-3 px-2">
+                    <span className="text-sm font-medium text-stone-600 flex items-center gap-2">
+                      <User size={16}/> {user.name}
+                    </span>
+                    <button onClick={handleLogout} className="text-stone-400 hover:text-red-500 transition-colors p-2" title="Log out">
+                      <LogOut size={20} />
+                    </button>
+                  </div>
+                ) : (
+                  <Button onClick={() => setView('login')} variant="outline" className="w-full">
+                    Sign In
+                  </Button>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </nav>
 
@@ -807,7 +1078,7 @@ export default function App() {
               <p className="text-stone-500">Sign in to your account.</p>
             </div>
             
-            <div className="bg-amber-50 p-4 rounded-xl mb-6 text-sm text-amber-800 border border-amber-200">
+            <div className="bg-primary-50 p-4 rounded-xl mb-6 text-sm text-primary-800 border border-primary-200">
               <strong>Demo Hint:</strong><br/>
               Type <code>admin</code> for Employee/Admin Dashboard.<br/>
               Type <code>user</code> for Customer account.
@@ -823,7 +1094,7 @@ export default function App() {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     required
-                    className="w-full pl-10 pr-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all"
+                    className="w-full pl-10 pr-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
                     placeholder="Enter username"
                   />
                 </div>
@@ -858,7 +1129,7 @@ export default function App() {
         {view === 'cart' && (
           <div className="max-w-4xl mx-auto mt-12 px-4 animate-in fade-in">
             <h2 className="text-3xl font-serif font-bold text-stone-800 mb-8 flex items-center gap-3">
-              <ShoppingBag className="text-amber-700" /> Your Shopping Bag
+              <ShoppingBag className="text-primary-700" /> Your Shopping Bag
             </h2>
             
             {cart.length === 0 ? (
@@ -914,30 +1185,42 @@ export default function App() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row gap-8">
             <div className="w-full md:w-64 flex-shrink-0">
               <div className="bg-white rounded-3xl shadow-sm border border-stone-100 overflow-hidden sticky top-28">
-                <div className="p-6 border-b border-stone-100 bg-amber-50/50">
-                  <p className="text-sm font-medium text-amber-800 uppercase tracking-wider mb-1">Workspace</p>
+                <div className="p-6 border-b border-stone-100 bg-primary-50/50">
+                  <p className="text-sm font-medium text-primary-800 uppercase tracking-wider mb-1">Workspace</p>
                   <p className="font-bold text-stone-800 flex items-center gap-2"><ShieldCheck size={18} className="text-green-600"/> Admin Portal</p>
                 </div>
                 <div className="p-3 space-y-1">
                   <button 
                     onClick={() => setView('admin-dashboard')}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${view === 'admin-dashboard' ? 'bg-amber-700 text-white shadow-md' : 'text-stone-600 hover:bg-stone-50'}`}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${view === 'admin-dashboard' ? 'bg-primary-600 text-white shadow-md' : 'text-stone-600 hover:bg-stone-50'}`}
                   >
                     <LayoutDashboard size={20} /> Dashboard
                   </button>
                   <button 
                     onClick={() => setView('admin-inventory')}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${view === 'admin-inventory' ? 'bg-amber-700 text-white shadow-md' : 'text-stone-600 hover:bg-stone-50'}`}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${view === 'admin-inventory' ? 'bg-primary-600 text-white shadow-md' : 'text-stone-600 hover:bg-stone-50'}`}
                   >
-                    <Package size={20} /> Inventory & Stock
+                    <Package size={20} /> Inventory
+                  </button>
+                  <button 
+                    onClick={() => setView('admin-stock')}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${view === 'admin-stock' ? 'bg-primary-600 text-white shadow-md' : 'text-stone-600 hover:bg-stone-50'}`}
+                  >
+                    <Package size={20} /> Stock
+                  </button>
+                  <button 
+                    onClick={() => setView('admin-staff')}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${view === 'admin-staff' ? 'bg-primary-600 text-white shadow-md' : 'text-stone-600 hover:bg-stone-50'}`}
+                  >
+                    <Users size={20} /> Staff Management
                   </button>
                   <button 
                     onClick={() => setView('admin-orders')}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${view === 'admin-orders' ? 'bg-amber-700 text-white shadow-md' : 'text-stone-600 hover:bg-stone-50'}`}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${view === 'admin-orders' ? 'bg-primary-600 text-white shadow-md' : 'text-stone-600 hover:bg-stone-50'}`}
                   >
                     <ShoppingBag size={20} /> Order Management
                     {orders.filter(o => o.status === 'Pending').length > 0 && (
-                      <span className="ml-auto bg-amber-100 text-amber-800 text-xs py-0.5 px-2 rounded-full font-bold">
+                      <span className="ml-auto bg-primary-100 text-primary-800 text-xs py-0.5 px-2 rounded-full font-bold">
                         {orders.filter(o => o.status === 'Pending').length}
                       </span>
                     )}
@@ -949,9 +1232,15 @@ export default function App() {
             <div className="flex-grow">
               {view === 'admin-dashboard' && <AdminDashboard salesData={SALES_DATA} orders={orders} products={products} />}
               {view === 'admin-inventory' && <AdminInventory products={products} setProducts={setProducts} />}
+              {view === 'admin-stock' && <AdminStock products={products} setProducts={setProducts} />}
+              {view === 'admin-staff' && <AdminStaff staff={staff} setStaff={setStaff} />}
               {view === 'admin-orders' && <AdminOrders orders={orders} setOrders={setOrders} />}
             </div>
           </div>
+        )}
+
+        {view === 'home' && (
+          <Storefront products={products} setView={setView} user={user} addToCart={addToCart} />
         )}
 
         {view === 'store' && (
@@ -967,3 +1256,4 @@ export default function App() {
     </div>
   );
 }
+
