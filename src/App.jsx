@@ -3,7 +3,7 @@ import {
   ShoppingBag, User, LogOut, Package, 
   LayoutDashboard, ShoppingCart, Plus, TrendingUp, 
   CheckCircle, XCircle, Star, Droplet, Leaf, ShieldCheck,
-  Mail, MapPin, Instagram, Twitter, Menu, X, Users
+  Mail, MapPin, Instagram, Phone, Send, Menu, X, Users
 } from 'lucide-react';
 import { 
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
@@ -22,6 +22,23 @@ const INITIAL_PRODUCTS = [
   { id: 2, name: 'Argan Moisture Seal Blend', price: 30.00, stock: 12, category: 'Moisture', rating: 4.9, image: PRODUCT_IMAGES[1], desc: 'Locks in moisture for dry, brittle ends.' },
   { id: 3, name: 'Chebe Infused Strengthener', price: 35.00, stock: 0, category: 'Strength', rating: 4.7, image: PRODUCT_IMAGES[2], desc: 'Traditional African secret for length retention.' },
   { id: 4, name: 'Daily Shine Serum', price: 18.00, stock: 85, category: 'Styling', rating: 4.5, image: PRODUCT_IMAGES[0], desc: 'Lightweight serum for everyday luster.' },
+];
+
+const PRODUCT_CATEGORIES = ['Growth', 'Moisture', 'Strength', 'Styling'];
+
+const MATERIAL_CATEGORIES = [
+  'Packaging - Liquid Plastic',
+  'Packaging - Powder',
+  'Sticker',
+  'Hair Oil Ingredient'
+];
+
+const INITIAL_MATERIALS = [
+  { id: 1, name: 'Plastic liquid bottles', category: 'Packaging - Liquid Plastic', stock: 500, unit: 'pcs', supplier: 'Local Packaging Supplier' },
+  { id: 2, name: 'Powder jars', category: 'Packaging - Powder', stock: 240, unit: 'pcs', supplier: 'Local Packaging Supplier' },
+  { id: 3, name: 'Product label stickers', category: 'Sticker', stock: 1000, unit: 'pcs', supplier: 'Print Shop' },
+  { id: 4, name: 'Rosemary oil', category: 'Hair Oil Ingredient', stock: 35, unit: 'liters', supplier: 'Ingredient Vendor' },
+  { id: 5, name: 'Chebe powder', category: 'Hair Oil Ingredient', stock: 28, unit: 'kg', supplier: 'Ingredient Vendor' },
 ];
 
 const INITIAL_ORDERS = [
@@ -85,7 +102,44 @@ const Badge = ({ text, type }) => {
 
 
 // --- STOREFRONT COMPONENTS ---
+const TESTIMONIALS = [
+  {
+    name: 'Hanna T.',
+    location: 'Addis Ababa',
+    quote: 'The rosemary oil made my scalp feel healthier, and my hair feels softer after every wash day.'
+  },
+  {
+    name: 'Mekdes A.',
+    location: 'Adama',
+    quote: 'I use the Chebe strengthener before protective styling. It helps my hair stay moisturized and reduces breakage.'
+  },
+  {
+    name: 'Selam B.',
+    location: 'Bole Bulbula',
+    quote: 'The oils are light, smell natural, and do not leave my hair greasy. I recommend them for daily care.'
+  }
+];
+
+const TIKTOK_VIDEOS = [
+  {
+    id: '7598921637840309522',
+    title: 'Miheret Naturals TikTok product video',
+    url: 'https://www.tiktok.com/@mihertzenebe116/video/7598921637840309522?is_from_webapp=1&sender_device=pc&web_id=7560979067026998795'
+  },
+  {
+    id: '7535742233245404472',
+    title: 'Miheret Naturals TikTok hair-care video',
+    url: 'https://www.tiktok.com/@mihertzenebe116/video/7535742233245404472?is_from_webapp=1&sender_device=pc&web_id=7560979067026998795'
+  },
+  {
+    id: '7641993324164926728',
+    title: 'Miheret Naturals TikTok routine video',
+    url: 'https://www.tiktok.com/@mihertzenebe116/video/7641993324164926728?is_from_webapp=1&sender_device=pc&web_id=7560979067026998795'
+  }
+];
+
 const Storefront = ({ products, setView, user, addToCart }) => {
+  const [activeTikTokVideoId, setActiveTikTokVideoId] = useState(null);
   const recommendedProducts = useMemo(() => {
     return [...products].sort((a, b) => b.rating - a.rating).slice(0, 3);
   }, [products]);
@@ -168,6 +222,79 @@ const Storefront = ({ products, setView, user, addToCart }) => {
             <h3 className="text-xl font-bold mb-2">Proven Results</h3>
             <p className="text-stone-600">Formulated based on traditional remedies backed by modern hair science.</p>
           </div>
+        </div>
+      </section>
+
+      {/* TikTok Videos */}
+      <section className="px-4 py-16 max-w-7xl mx-auto">
+        <div className="text-center mb-10">
+          <p className="text-sm font-semibold uppercase tracking-wider text-primary-700 mb-2">TikTok Videos</p>
+          <h2 className="text-3xl font-serif font-bold text-stone-800 mb-3">See the Products in Action</h2>
+          <p className="text-stone-500 max-w-2xl mx-auto">Watch short videos from our TikTok page showing Miheret Naturals hair-care products and routines.</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {TIKTOK_VIDEOS.map((video) => (
+            <div key={video.id} className="bg-white rounded-3xl border border-stone-100 shadow-sm overflow-hidden">
+              <div className="bg-stone-100 aspect-[9/16] max-h-[720px]">
+                {activeTikTokVideoId === video.id ? (
+                  <iframe
+                    title={video.title}
+                    src={`https://www.tiktok.com/embed/v2/${video.id}`}
+                    className="w-full h-full"
+                    allow="encrypted-media; fullscreen; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setActiveTikTokVideoId(video.id)}
+                    className="w-full h-full flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-stone-900 to-stone-700 text-white text-center p-6 hover:from-stone-800 hover:to-stone-600 transition-colors"
+                    aria-label={`Play ${video.title}`}
+                  >
+                    <span className="w-16 h-16 rounded-full bg-white text-stone-900 flex items-center justify-center text-2xl font-bold shadow-lg">▶</span>
+                    <span className="font-semibold">Click to play TikTok video</span>
+                  </button>
+                )}
+              </div>
+              <div className="p-5">
+                <a
+                  href={video.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center rounded-lg bg-stone-900 px-4 py-2 font-medium text-white hover:bg-stone-800 transition-colors"
+                >
+                  Open on TikTok
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="px-4 py-16 max-w-7xl mx-auto">
+        <div className="text-center mb-10">
+          <p className="text-sm font-semibold uppercase tracking-wider text-primary-700 mb-2">Testimonials</p>
+          <h2 className="text-3xl font-serif font-bold text-stone-800 mb-3">What Customers Say</h2>
+          <p className="text-stone-500 max-w-2xl mx-auto">Real feedback from customers using Miheret Naturals in their hair-care routines.</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {TESTIMONIALS.map((testimonial) => (
+            <div key={testimonial.name} className="bg-white rounded-3xl border border-stone-100 shadow-sm p-6">
+              <div className="flex items-center gap-1 text-primary-500 mb-4">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <Star key={star} size={18} className="fill-primary-500" />
+                ))}
+              </div>
+              <p className="text-stone-600 mb-6">"{testimonial.quote}"</p>
+              <div>
+                <p className="font-bold text-stone-800">{testimonial.name}</p>
+                <p className="text-sm text-stone-500">{testimonial.location}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     </div>
@@ -302,6 +429,113 @@ const ProductCard = ({ product, addToCart }) => (
   </div>
 );
 
+const PRODUCT_USAGE_GUIDES = {
+  Growth: {
+    steps: [
+      'Part clean, dry or slightly damp hair into small sections.',
+      'Apply a few drops directly to the scalp, especially thin or dry areas.',
+      'Massage with fingertips for 3-5 minutes, then leave in for at least 2 hours or overnight.'
+    ],
+    frequency: 'Use 2-3 times per week for scalp care and growth support.'
+  },
+  Moisture: {
+    steps: [
+      'Warm a small amount between your palms.',
+      'Apply from mid-length to ends after washing or before styling.',
+      'Focus on dry ends and avoid over-applying near the scalp.'
+    ],
+    frequency: 'Use after wash day or whenever hair feels dry.'
+  },
+  Strength: {
+    steps: [
+      'Apply lightly to scalp and hair strands before protective styling.',
+      'Massage gently and distribute through the ends.',
+      'Cover hair for 30-60 minutes before washing, or use a small amount as a leave-in.'
+    ],
+    frequency: 'Use weekly for length retention and breakage reduction.'
+  },
+  Styling: {
+    steps: [
+      'Use 1-3 drops on finished styles.',
+      'Smooth over flyaways, edges, or dry ends.',
+      'Add more only if needed to avoid weighing hair down.'
+    ],
+    frequency: 'Use daily or as needed for shine.'
+  }
+};
+
+const getUsageGuide = (category) => PRODUCT_USAGE_GUIDES[category] || {
+  steps: [
+    'Start with a small amount of product.',
+    'Apply evenly to scalp or hair strands based on your hair need.',
+    'Massage or smooth through hair and style as desired.'
+  ],
+  frequency: 'Use as needed based on your hair type and routine.'
+};
+
+const buildYouTubeSearchUrl = (productName) => (
+  `https://www.youtube.com/results?search_query=${encodeURIComponent(`${productName} hair oil how to use`)}`
+);
+
+const HowToUsePage = ({ products }) => (
+  <div className="max-w-7xl mx-auto px-4 py-12 animate-in fade-in">
+    <div className="mb-10 max-w-3xl">
+      <p className="text-sm font-semibold uppercase tracking-wider text-primary-700 mb-2">Product Guide</p>
+      <h2 className="text-4xl font-serif font-bold text-stone-800 mb-4">How to Use Our Hair Oils</h2>
+      <p className="text-stone-600 text-lg">
+        Use these guides to apply each product correctly. Start with a small amount, observe how your hair responds, and adjust based on your scalp and hair needs.
+      </p>
+    </div>
+
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      {products.map((product) => {
+        const guide = getUsageGuide(product.category);
+
+        return (
+          <article key={`usage-${product.id}`} className="bg-white rounded-3xl border border-stone-100 shadow-sm overflow-hidden">
+            <div className="grid grid-cols-1 sm:grid-cols-2">
+              <div className="bg-stone-100 min-h-72">
+                <img src={product.image} alt={`${product.name} product`} className="w-full h-full object-cover" />
+              </div>
+              <div className="p-6 flex flex-col">
+                <div className="mb-4">
+                  <span className="inline-flex px-3 py-1 rounded-full bg-primary-50 text-primary-700 text-xs font-semibold mb-3">
+                    {product.category}
+                  </span>
+                  <h3 className="text-2xl font-serif font-bold text-stone-800">{product.name}</h3>
+                  <p className="text-stone-500 mt-2">{product.desc}</p>
+                </div>
+
+                <div className="mb-5">
+                  <h4 className="font-semibold text-stone-800 mb-2">Application Steps</h4>
+                  <ol className="space-y-2 text-stone-600 list-decimal list-inside">
+                    {guide.steps.map((step) => (
+                      <li key={step}>{step}</li>
+                    ))}
+                  </ol>
+                </div>
+
+                <p className="text-sm text-stone-500 mb-5">
+                  <span className="font-semibold text-stone-700">Recommended use:</span> {guide.frequency}
+                </p>
+
+                <a
+                  href={buildYouTubeSearchUrl(product.name)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-auto inline-flex items-center justify-center rounded-lg bg-red-600 px-4 py-2 font-medium text-white hover:bg-red-700 transition-colors"
+                >
+                  Watch on YouTube
+                </a>
+              </div>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+);
+
 
 // --- ADMIN COMPONENTS ---
 const AdminDashboard = ({ salesData, orders, products }) => {
@@ -393,9 +627,11 @@ const AdminDashboard = ({ salesData, orders, products }) => {
   );
 };
 
-const AdminInventory = ({ products, setProducts }) => {
+const AdminInventory = ({ products, setProducts, materials, setMaterials }) => {
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showAddMaterialModal, setShowAddMaterialModal] = useState(false);
   const [newProduct, setNewProduct] = useState({ name: '', price: '', stock: '', category: '', desc: '' });
+  const [newMaterial, setNewMaterial] = useState({ name: '', category: '', stock: '', unit: '', supplier: '' });
 
   const handleAddProduct = (e) => {
     e.preventDefault();
@@ -414,53 +650,104 @@ const AdminInventory = ({ products, setProducts }) => {
     setNewProduct({ name: '', price: '', stock: '', category: '', desc: '' });
   };
 
+  const handleAddMaterial = (e) => {
+    e.preventDefault();
+    setMaterials([
+      ...materials,
+      {
+        id: Date.now(),
+        name: newMaterial.name,
+        category: newMaterial.category || MATERIAL_CATEGORIES[0],
+        stock: parseInt(newMaterial.stock) || 0,
+        unit: newMaterial.unit || 'units',
+        supplier: newMaterial.supplier || 'Not assigned',
+      },
+    ]);
+    setShowAddMaterialModal(false);
+    setNewMaterial({ name: '', category: '', stock: '', unit: '', supplier: '' });
+  };
+
   return (
     <div className="animate-in fade-in space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-stone-800">Inventory Management</h2>
-        <Button onClick={() => setShowAddModal(true)}><Plus size={20} /> Add Product</Button>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h2 className="text-2xl font-bold text-stone-800">Inventory Management</h2>
+          <p className="text-stone-500">Separate finished products from packaging, stickers, and ingredients.</p>
+        </div>
+        <div className="flex flex-wrap gap-3">
+          <Button onClick={() => setShowAddMaterialModal(true)} variant="outline"><Plus size={20} /> Add Material</Button>
+          <Button onClick={() => setShowAddModal(true)}><Plus size={20} /> Add Product</Button>
+        </div>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-stone-100 overflow-hidden">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-stone-50 text-stone-500 border-b border-stone-200">
-              <th className="p-4 font-semibold">Product</th>
-              <th className="p-4 font-semibold">Category</th>
-              <th className="p-4 font-semibold">Price</th>
-              <th className="p-4 font-semibold">Stock Level</th>
-              <th className="p-4 font-semibold">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map(product => (
-              <tr key={product.id} className="border-b border-stone-100 hover:bg-stone-50 transition-colors">
-                <td className="p-4 flex items-center gap-3">
-                  <img src={product.image} alt={product.name} className="w-10 h-10 rounded-lg object-cover" />
-                  <span className="font-medium text-stone-800">{product.name}</span>
-                </td>
-                <td className="p-4 text-stone-600">{product.category}</td>
-                <td className="p-4 text-stone-800 font-medium">${product.price.toFixed(2)}</td>
-                <td className="p-4">
-                  <div className="flex items-center gap-2">
-                    <span className="text-stone-800">{product.stock} units</span>
-                    {product.stock < 20 && product.stock > 0 && <Badge text="Low" type="warning" />}
-                  </div>
-                </td>
-                <td className="p-4">
-                  {product.stock > 0 ? (
-                    <Badge text="In Stock" type="success" />
-                  ) : (
-                    <Badge text="Out of Stock" type="danger" />
-                  )}
-                </td>
+      <div className="space-y-3">
+        <h3 className="text-lg font-bold text-stone-800">Product Inventory</h3>
+        <div className="bg-white rounded-2xl shadow-sm border border-stone-100 overflow-x-auto">
+          <table className="w-full min-w-[760px] text-left border-collapse">
+            <thead>
+              <tr className="bg-stone-50 text-stone-500 border-b border-stone-200">
+                <th className="p-4 font-semibold">Product</th>
+                <th className="p-4 font-semibold">Category</th>
+                <th className="p-4 font-semibold">Price</th>
+                <th className="p-4 font-semibold">Stock Level</th>
+                <th className="p-4 font-semibold">Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {products.map(product => (
+                <tr key={product.id} className="border-b border-stone-100 hover:bg-stone-50 transition-colors">
+                  <td className="p-4 flex items-center gap-3">
+                    <img src={product.image} alt={product.name} className="w-10 h-10 rounded-lg object-cover" />
+                    <span className="font-medium text-stone-800">{product.name}</span>
+                  </td>
+                  <td className="p-4 text-stone-600">{product.category}</td>
+                  <td className="p-4 text-stone-800 font-medium">${product.price.toFixed(2)}</td>
+                  <td className="p-4">
+                    <div className="flex items-center gap-2">
+                      <span className="text-stone-800">{product.stock} units</span>
+                      {product.stock < 20 && product.stock > 0 && <Badge text="Low" type="warning" />}
+                    </div>
+                  </td>
+                  <td className="p-4">
+                    {product.stock > 0 ? <Badge text="In Stock" type="success" /> : <Badge text="Out of Stock" type="danger" />}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      {/* Add Product Modal */}
+      <div className="space-y-3">
+        <h3 className="text-lg font-bold text-stone-800">Materials Inventory</h3>
+        <div className="bg-white rounded-2xl shadow-sm border border-stone-100 overflow-x-auto">
+          <table className="w-full min-w-[760px] text-left border-collapse">
+            <thead>
+              <tr className="bg-stone-50 text-stone-500 border-b border-stone-200">
+                <th className="p-4 font-semibold">Material</th>
+                <th className="p-4 font-semibold">Category</th>
+                <th className="p-4 font-semibold">Stock Level</th>
+                <th className="p-4 font-semibold">Supplier</th>
+                <th className="p-4 font-semibold">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {materials.map(material => (
+                <tr key={material.id} className="border-b border-stone-100 hover:bg-stone-50 transition-colors">
+                  <td className="p-4 font-medium text-stone-800">{material.name}</td>
+                  <td className="p-4 text-stone-600">{material.category}</td>
+                  <td className="p-4 text-stone-800 font-medium">{material.stock} {material.unit}</td>
+                  <td className="p-4 text-stone-600">{material.supplier}</td>
+                  <td className="p-4">
+                    {material.stock === 0 ? <Badge text="Out of Stock" type="danger" /> : material.stock < 30 ? <Badge text="Low" type="warning" /> : <Badge text="In Stock" type="success" />}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       {showAddModal && (
         <div className="fixed inset-0 bg-stone-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl animate-in zoom-in-95 duration-200">
@@ -489,10 +776,9 @@ const AdminInventory = ({ products, setProducts }) => {
                 <label className="block text-sm font-medium text-stone-700 mb-1">Category</label>
                 <select value={newProduct.category} onChange={e => setNewProduct({...newProduct, category: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none">
                   <option value="">Select category...</option>
-                  <option value="Growth">Growth</option>
-                  <option value="Moisture">Moisture</option>
-                  <option value="Strength">Strength</option>
-                  <option value="Styling">Styling</option>
+                  {PRODUCT_CATEGORIES.map(category => (
+                    <option key={category} value={category}>{category}</option>
+                  ))}
                 </select>
               </div>
               <div>
@@ -502,6 +788,52 @@ const AdminInventory = ({ products, setProducts }) => {
               <div className="pt-4 flex gap-3">
                 <Button type="button" variant="secondary" className="flex-1" onClick={() => setShowAddModal(false)}>Cancel</Button>
                 <Button type="submit" className="flex-1">Save Product</Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {showAddMaterialModal && (
+        <div className="fixed inset-0 bg-stone-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl animate-in zoom-in-95 duration-200">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-bold text-stone-800">Add New Material</h3>
+              <button onClick={() => setShowAddMaterialModal(false)} className="text-stone-400 hover:text-stone-600">
+                <XCircle size={24} />
+              </button>
+            </div>
+            <form onSubmit={handleAddMaterial} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-1">Material Name</label>
+                <input required type="text" value={newMaterial.name} onChange={e => setNewMaterial({...newMaterial, name: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-1">Category</label>
+                <select value={newMaterial.category} onChange={e => setNewMaterial({...newMaterial, category: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none">
+                  <option value="">Select category...</option>
+                  {MATERIAL_CATEGORIES.map(category => (
+                    <option key={category} value={category}>{category}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-stone-700 mb-1">Stock</label>
+                  <input required type="number" value={newMaterial.stock} onChange={e => setNewMaterial({...newMaterial, stock: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-stone-700 mb-1">Unit</label>
+                  <input required type="text" placeholder="pcs, kg, liters" value={newMaterial.unit} onChange={e => setNewMaterial({...newMaterial, unit: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-1">Supplier</label>
+                <input type="text" value={newMaterial.supplier} onChange={e => setNewMaterial({...newMaterial, supplier: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" />
+              </div>
+              <div className="pt-4 flex gap-3">
+                <Button type="button" variant="secondary" className="flex-1" onClick={() => setShowAddMaterialModal(false)}>Cancel</Button>
+                <Button type="submit" className="flex-1">Save Material</Button>
               </div>
             </form>
           </div>
@@ -635,6 +967,8 @@ const AdminStaff = ({ staff, setStaff }) => {
 };
 
 const AdminStock = ({ products, setProducts }) => {
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [newProduct, setNewProduct] = useState({ name: '', price: '', stock: '', category: '', desc: '' });
   const totalUnits = products.reduce((sum, product) => sum + product.stock, 0);
   const lowStockCount = products.filter(product => product.stock > 0 && product.stock < 20).length;
   const outOfStockCount = products.filter(product => product.stock === 0).length;
@@ -645,11 +979,31 @@ const AdminStock = ({ products, setProducts }) => {
     )));
   };
 
+  const handleAddProduct = (e) => {
+    e.preventDefault();
+    const productToAdd = {
+      id: Date.now(),
+      name: newProduct.name,
+      price: parseFloat(newProduct.price) || 0,
+      stock: parseInt(newProduct.stock) || 0,
+      category: newProduct.category || 'General',
+      desc: newProduct.desc,
+      rating: 5.0,
+      image: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&q=80&w=400'
+    };
+    setProducts([...products, productToAdd]);
+    setShowAddModal(false);
+    setNewProduct({ name: '', price: '', stock: '', category: '', desc: '' });
+  };
+
   return (
     <div className="animate-in fade-in space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-stone-800">Stock Management</h2>
-        <p className="text-stone-500">Track inventory levels and make quick stock adjustments.</p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h2 className="text-2xl font-bold text-stone-800">Stock Management</h2>
+          <p className="text-stone-500">Track inventory levels and make quick stock adjustments.</p>
+        </div>
+        <Button onClick={() => setShowAddModal(true)}><Plus size={20} /> Add Product</Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -702,6 +1056,52 @@ const AdminStock = ({ products, setProducts }) => {
           </tbody>
         </table>
       </div>
+
+      {showAddModal && (
+        <div className="fixed inset-0 bg-stone-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl animate-in zoom-in-95 duration-200">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-bold text-stone-800">Add New Product</h3>
+              <button onClick={() => setShowAddModal(false)} className="text-stone-400 hover:text-stone-600">
+                <XCircle size={24} />
+              </button>
+            </div>
+            <form onSubmit={handleAddProduct} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-1">Product Name</label>
+                <input required type="text" value={newProduct.name} onChange={e => setNewProduct({...newProduct, name: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-stone-700 mb-1">Price ($)</label>
+                  <input required type="number" step="0.01" value={newProduct.price} onChange={e => setNewProduct({...newProduct, price: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-stone-700 mb-1">Initial Stock</label>
+                  <input required type="number" value={newProduct.stock} onChange={e => setNewProduct({...newProduct, stock: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-1">Category</label>
+                <select value={newProduct.category} onChange={e => setNewProduct({...newProduct, category: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none">
+                  <option value="">Select category...</option>
+                  {PRODUCT_CATEGORIES.map(category => (
+                    <option key={category} value={category}>{category}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-1">Description</label>
+                <textarea rows="3" value={newProduct.desc} onChange={e => setNewProduct({...newProduct, desc: e.target.value})} className="w-full p-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none"></textarea>
+              </div>
+              <div className="pt-4 flex gap-3">
+                <Button type="button" variant="secondary" className="flex-1" onClick={() => setShowAddModal(false)}>Cancel</Button>
+                <Button type="submit" className="flex-1">Save Product</Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -782,17 +1182,21 @@ const ContactSection = () => {
             <h3 className="text-3xl font-serif font-bold text-stone-800 mb-4">Get In Touch</h3>
             <p className="text-stone-600 mb-6">Have a question about our products or orders? Send us a message and we'll get back to you shortly.</p>
             <div className="space-y-3 text-stone-600">
-              <div className="flex items-center gap-3">
-                <MapPin />
-                <span>Addis Ababa, Ethiopia</span>
+              <div className="flex items-start gap-3">
+                <MapPin className="mt-1 shrink-0" />
+                <span>አ.አ-22 ፀዲ ፕላዛ 1ኛ /ቦሌ ቡልቡላ</span>
+              </div>
+              <div className="flex items-start gap-3">
+                <MapPin className="mt-1 shrink-0" />
+                <span>አዳማ-ፓን አፍሪክ አካባቢ</span>
               </div>
               <div className="flex items-center gap-3">
-                <Mail />
-                <span>hello@miheretnaturals.example</span>
+                <Send />
+                <a href="https://t.me/Abigailhairfoods" target="_blank" rel="noreferrer" className="hover:text-primary-700 transition-colors">Telegram @Abigailhairfoods</a>
               </div>
               <div className="flex items-center gap-3">
-                <Twitter />
-                <span>@miheret_naturals</span>
+                <Phone />
+                <a href="tel:0993934070" className="hover:text-primary-700 transition-colors">0993934070</a>
               </div>
             </div>
           </div>
@@ -813,6 +1217,22 @@ const ContactSection = () => {
   );
 };
 
+const TikTokIcon = (props) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+    {...props}
+  >
+    <path d="M14 3v10.5a4.5 4.5 0 1 1-4.5-4.5" />
+    <path d="M14 3c.7 3.1 2.8 5.1 6 5.5" />
+  </svg>
+);
+
 const Footer = () => (
   <footer className="bg-stone-900 text-stone-200 py-8 mt-12">
     <div className="max-w-7xl mx-auto px-4">
@@ -825,7 +1245,7 @@ const Footer = () => (
           <p className="text-stone-400 max-w-sm">Handcrafted hair oils made with ethically sourced ingredients. Nourish your hair the natural way.</p>
         </div>
 
-        <div className="flex gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
           <div>
             <h4 className="font-semibold text-white mb-2">Shop</h4>
             <ul className="space-y-1 text-stone-400">
@@ -837,10 +1257,31 @@ const Footer = () => (
           <div>
             <h4 className="font-semibold text-white mb-2">Connect</h4>
             <div className="flex items-center gap-3 text-stone-400">
-              <a href="#" aria-label="instagram"><Instagram /></a>
-              <a href="#" aria-label="twitter"><Twitter /></a>
-              <a href="#" aria-label="email"><Mail /></a>
+              <a href="#" aria-label="TikTok" className="hover:text-white transition-colors"><TikTokIcon className="w-6 h-6" /></a>
+              <a href="#" aria-label="Instagram" className="hover:text-white transition-colors"><Instagram /></a>
+              <a href="mailto:info@miheretnaturals.com" aria-label="Email" className="hover:text-white transition-colors"><Mail /></a>
             </div>
+          </div>
+          <div>
+            <h4 className="font-semibold text-white mb-2">Contact</h4>
+            <ul className="space-y-2 text-stone-400">
+              <li className="flex gap-2">
+                <MapPin className="w-4 h-4 mt-1 shrink-0" />
+                <span>አ.አ-22 ፀዲ ፕላዛ 1ኛ /ቦሌ ቡልቡላ</span>
+              </li>
+              <li className="flex gap-2">
+                <MapPin className="w-4 h-4 mt-1 shrink-0" />
+                <span>አዳማ-ፓን አፍሪክ አካባቢ</span>
+              </li>
+              <li className="flex gap-2">
+                <Send className="w-4 h-4 mt-1 shrink-0" />
+                <a href="https://t.me/Abigailhairfoods" className="hover:text-white transition-colors">Telegram @Abigailhairfoods</a>
+              </li>
+              <li className="flex gap-2">
+                <Phone className="w-4 h-4 mt-1 shrink-0" />
+                <a href="tel:0993934070" className="hover:text-white transition-colors">0993934070</a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -858,6 +1299,7 @@ export default function App() {
   const [view, setView] = useState('home');
   const [user, setUser] = useState(null);
   const [products, setProducts] = useState(INITIAL_PRODUCTS);
+  const [materials, setMaterials] = useState(INITIAL_MATERIALS);
   const [orders, setOrders] = useState(INITIAL_ORDERS);
   const [staff, setStaff] = useState(INITIAL_STAFF);
   const [cart, setCart] = useState([]);
@@ -872,6 +1314,7 @@ export default function App() {
       if (p === '/cart') return 'cart';
       if (p === '/login') return 'login';
       if (p === '/store') return 'store';
+      if (p === '/how-to-use') return 'how-to-use';
       if (p === '/') return 'home';
       return 'home';
     };
@@ -895,6 +1338,7 @@ export default function App() {
       if (v === 'login') return '/login';
       if (v.startsWith('admin')) return '/admin';
       if (v === 'store') return '/store';
+      if (v === 'how-to-use') return '/how-to-use';
       return '/';
     };
     const newPath = mapViewToPath(view);
@@ -982,6 +1426,7 @@ export default function App() {
                 <>
                   <button onClick={() => setView('home')} className={`font-medium transition-colors ${view === 'home' ? 'text-primary-700' : 'text-stone-500 hover:text-stone-800'}`}>Home</button>
                   <button onClick={() => setView('store')} className={`font-medium transition-colors ${view === 'store' ? 'text-primary-700' : 'text-stone-500 hover:text-stone-800'}`}>Store</button>
+                  <button onClick={() => setView('how-to-use')} className={`font-medium transition-colors ${view === 'how-to-use' ? 'text-primary-700' : 'text-stone-500 hover:text-stone-800'}`}>How To Use</button>
                   <div className="relative cursor-pointer" onClick={() => setView('cart')}>
                     <ShoppingCart className="text-stone-600 hover:text-primary-700 transition-colors" />
                     {cart.length > 0 && (
@@ -1045,6 +1490,7 @@ export default function App() {
                 <>
                   <button onClick={() => setView('home')} className={`block w-full text-left px-2 py-2 font-medium rounded-lg ${view === 'home' ? 'text-primary-700 bg-primary-50' : 'text-stone-600'}`}>Home</button>
                   <button onClick={() => setView('store')} className={`block w-full text-left px-2 py-2 font-medium rounded-lg ${view === 'store' ? 'text-primary-700 bg-primary-50' : 'text-stone-600'}`}>Store</button>
+                  <button onClick={() => setView('how-to-use')} className={`block w-full text-left px-2 py-2 font-medium rounded-lg ${view === 'how-to-use' ? 'text-primary-700 bg-primary-50' : 'text-stone-600'}`}>How To Use</button>
                   <button onClick={() => setView('cart')} className={`block w-full text-left px-2 py-2 font-medium rounded-lg ${view === 'cart' ? 'text-primary-700 bg-primary-50' : 'text-stone-600'}`}>Cart</button>
                 </>
               )}
@@ -1231,7 +1677,7 @@ export default function App() {
 
             <div className="flex-grow">
               {view === 'admin-dashboard' && <AdminDashboard salesData={SALES_DATA} orders={orders} products={products} />}
-              {view === 'admin-inventory' && <AdminInventory products={products} setProducts={setProducts} />}
+              {view === 'admin-inventory' && <AdminInventory products={products} setProducts={setProducts} materials={materials} setMaterials={setMaterials} />}
               {view === 'admin-stock' && <AdminStock products={products} setProducts={setProducts} />}
               {view === 'admin-staff' && <AdminStaff staff={staff} setStaff={setStaff} />}
               {view === 'admin-orders' && <AdminOrders orders={orders} setOrders={setOrders} />}
@@ -1247,8 +1693,12 @@ export default function App() {
           <StorePage products={products} setView={setView} user={user} addToCart={addToCart} />
         )}
 
-        {/* Contact section shown on all pages except login and cart */}
-        {view !== 'login' && view !== 'cart' && <ContactSection />}
+        {view === 'how-to-use' && (
+          <HowToUsePage products={products} />
+        )}
+
+        {/* Contact section shown on customer-facing pages only */}
+        {view !== 'login' && view !== 'cart' && !view.startsWith('admin') && <ContactSection />}
       </main>
 
       {/* Footer (hidden on login) */}
